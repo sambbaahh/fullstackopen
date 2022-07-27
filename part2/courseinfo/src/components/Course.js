@@ -20,19 +20,16 @@ const Course = ({ course }) => {
     0
   )
   
-
   return (
     <div>
       <Header course={course.name} />
-
+      
       <>{course.parts.map(part =>
         <Content key={part.id} part={part} />
       )}
       </>
 
       <Total sum = {total}/>
-
-
     </div>
   )
 }
