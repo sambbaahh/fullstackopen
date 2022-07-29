@@ -3,7 +3,7 @@ const Countries = ({ countries, setSearch }) => {
 
     let countryAmount = countries.length
 
-    const showCountry = (country) => setSearch(country)
+    const showCountry = (event) => setSearch(event.target.value)
 
 
     if (countryAmount > 10) {
@@ -17,7 +17,7 @@ const Countries = ({ countries, setSearch }) => {
             countries.map(country =>
                 <div key={country.name.common}>
                     {country.name.common}
-                    <button value={country.name.common} onClick={() => showCountry(country.name.common)}>
+                    <button value={country.name.common} onClick={(event) => showCountry(event)}>
                         show
                     </button>
                 </div>
@@ -31,6 +31,7 @@ const Countries = ({ countries, setSearch }) => {
             <Details country={country} />
         )
     }
+
 }
 
 export default Countries
