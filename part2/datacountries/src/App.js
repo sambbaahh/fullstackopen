@@ -39,10 +39,3 @@ const App = () => {
 }
 
 export default App;
-
-
-
-/*
-      {CountriesToShow.map(country =>
-        <Country country={country} key={country.name.official} countryAmount={CountriesToShow.length}
-*/
