@@ -1,6 +1,7 @@
-const { response, request } = require('express')
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
+const cors = require('cors')
 
 let persons = [
     {
@@ -25,7 +26,11 @@ let persons = [
     }
 ]
 
+app.use(cors())
 app.use(express.json())
+morgan.token('body', function (req, res) { return req.method === 'POST' ? JSON.stringify(req.body) : '' })
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+app.use(express.static('build'))
 
 GenereteId = () => Math.floor(Math.random() * 10000)
 
@@ -60,11 +65,7 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-
     const body = request.body
-    console.log(body)
-
-
 
     if (!body.name || !body.number) {
         return response.status(400).json({
@@ -85,14 +86,14 @@ app.post('/api/persons', (request, response) => {
     }
 
     persons = persons.concat(newPerson)
-
     response.json(newPerson)
+
 })
 
 
-
-
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
+
+//https://young-sea-02089.herokuapp.com
