@@ -20,7 +20,6 @@ const remove = id => {
 
 const update = (id, newObject) => {
     const updateUrl = baseURL + id
-    console.log(id)
     const request = axios.put(updateUrl, newObject)
     return request.then(response => response.data)
 }

@@ -49,13 +49,19 @@ const App = () => {
                 return person
               }
             }))
+
             setNewName('')
             setNewNumber('')
           })
+          
+          .getAll()
+          .then(initialContacts =>
+            setPersons(initialContacts))
+
+            
           .catch(error => {
             setError(true)
             setMessage(`Information of ${newName} has alreay been removed from the server`)
-
           })
       }
     }
@@ -75,17 +81,18 @@ const App = () => {
           setError(false)
           setMessage(`Added ${newName}`)
 
-
           setTimeout(() => {
             setMessage(null)
           }, 2500)
 
-
           setNewName('')
           setNewNumber('')
-
-
+        
         })
+        .catch(err => {
+          setError(true)
+          setMessage(err.response.data.error)
+    })
 
 
     }
