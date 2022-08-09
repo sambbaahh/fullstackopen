@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "day in the barbers life",
+  "author": "Iida",
+  "url": "http://localhost:3003/api/blogs",
+  "likes": 112
+}
