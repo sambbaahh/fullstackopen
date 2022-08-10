@@ -3,8 +3,9 @@ const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const blogsRouter = require('./controllers/blogs')
+require('dotenv').config()
 
-const mongoUrl = 'mongodb+srv://fullstack:lollipoppi@cluster0.srxsuls.mongodb.net/?retryWrites=true&w=majority'
+const mongoUrl = process.env.MONGODB_URI
 console.log('connecting to', mongoUrl)
 
 mongoose.connect(mongoUrl)
