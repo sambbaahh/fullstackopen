@@ -8,10 +8,14 @@ const blogSchema = mongoose.Schema({
     type: String
   },
   url: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   likes: {
     type: Number,
     default: 0
-  }
+  },
 })
 
 blogSchema.set('toJSON', {

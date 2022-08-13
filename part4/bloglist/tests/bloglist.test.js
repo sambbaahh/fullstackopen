@@ -1,8 +1,29 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
+const jwt = require('jsonwebtoken')
 
 const api = supertest(app)
+
+let authorization
+
+beforeEach(async () => {
+    const newUser = {
+        username: 'testUser',
+        name: 'Test User',
+        password: 'password',
+    }
+    await api
+        .post('/api/users')
+        .send(newUser)
+
+    const result = await api
+        .post('/api/login')
+        .send(newUser)
+
+    authorization = `bearer ${result.body.token}`
+
+})
 
 describe('bloglist tests', () => {
     test('notes are returned as json and length is 3', async () => {
@@ -22,6 +43,7 @@ describe('bloglist tests', () => {
     })
 
     test('blog can be added', async () => {
+        console.log(authorization)
         const newBlog = {
             title: "Type wars",
             author: "Robert C. Martin",
@@ -35,6 +57,7 @@ describe('bloglist tests', () => {
         await api
             .post('/api/blogs')
             .send(newBlog)
+            .set('Authorization', authorization)
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
@@ -56,6 +79,7 @@ describe('bloglist tests', () => {
         await api
             .post('/api/blogs')
             .send(newBlog)
+            .set('Authorization', authorization)
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
@@ -73,6 +97,7 @@ describe('bloglist tests', () => {
         await api
             .post('/api/blogs')
             .send(newBlog)
+            .set('Authorization', authorization)
             .expect(400)
     })
 
@@ -82,6 +107,7 @@ describe('bloglist tests', () => {
 
         await api
             .delete(`/api/blogs/${idDelete}`)
+            .set('Authorization', authorization)
             .expect(204)
     })
 
