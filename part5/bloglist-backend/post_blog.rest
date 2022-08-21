@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBla2thcHV1cMOkw6QiLCJpZCI6IjYyZjc4NjQyYmY1ZDJkNzM1ODNiMjBmMyIsImlhdCI6MTY2MDM4ODkzN30.ucDDWgSI9KgElpmModdYxsszwEee4Htfo4TPQb30CYI
+
+{
+  "title":"pekan päevä",
+  "author": "pka",
+  "url": "http://localhost:3003/api/blogs",
+  "likes": 2
+}
