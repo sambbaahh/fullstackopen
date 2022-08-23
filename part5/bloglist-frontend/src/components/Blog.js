@@ -30,8 +30,6 @@ const Blog = ({ blog, updateLikes, user, deleteBlog }) => {
     }
   }
 
-  //(blog.user.username === user.username)
-
   const lessDetails = () => (
     <div>
       {blog.title} {blog.author}
@@ -67,7 +65,7 @@ const Blog = ({ blog, updateLikes, user, deleteBlog }) => {
   )
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       {showMore
         ? moreDetails()
         : lessDetails()}
@@ -76,10 +74,7 @@ const Blog = ({ blog, updateLikes, user, deleteBlog }) => {
 }
 
 Blog.propTypes = {
-  updateLikes: PropTypes.func.isRequired,
-  blog: PropTypes.object.isRequired,
-  deleteBlog: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired
+  blog: PropTypes.object.isRequired
 }
 
 export default Blog
