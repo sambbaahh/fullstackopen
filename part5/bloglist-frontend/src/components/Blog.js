@@ -31,7 +31,7 @@ const Blog = ({ blog, updateLikes, user, deleteBlog }) => {
   }
 
   const lessDetails = () => (
-    <div>
+    <div className="blog" >
       {blog.title} {blog.author}
       <button id={blog.id} onClick={() => setShowMore(!showMore)}>
         {showMore ? "hide" : "view"}
@@ -40,7 +40,7 @@ const Blog = ({ blog, updateLikes, user, deleteBlog }) => {
   )
 
   const moreDetails = () => (
-    <div>
+    <div className="blog" >
       {blog.title} {blog.author}
       <button id={blog.id} onClick={() => setShowMore(!showMore)}>
         {showMore ? "hide" : "view"}
@@ -57,9 +57,9 @@ const Blog = ({ blog, updateLikes, user, deleteBlog }) => {
       <div>
         {blog.author}
       </div>
-      {blog.user.username === user.username
-      ? <button onClick={() => removeBlog({ blog })}> remove </button>
-      : "" }
+      {blog.user.id === user.id || blog.user.name === user.name 
+       ? <button onClick={() => removeBlog({ blog })}> remove </button>
+       : "" }
 
     </div>
   )
