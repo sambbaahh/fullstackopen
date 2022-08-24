@@ -1,5 +1,5 @@
-describe('Blog app', function() {
-  beforeEach(function() {
+describe('Blog app', function () {
+  beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
     const user = {
       name: 'Sami Kukkonen',
@@ -10,20 +10,20 @@ describe('Blog app', function() {
     cy.visit('http://localhost:3000')
   })
 
-  it('Login form is shown', function() {
+  it('Login form is shown', function () {
     cy.get('#username')
     cy.get('#password')
   })
 
-  describe('Login',function() {
-    it('succeeds with correct credentials', function() {
+  describe('Login', function () {
+    it('succeeds with correct credentials', function () {
       cy.get('#username').type('samik')
       cy.get('#password').type('salainen')
       cy.contains('login').click()
       cy.contains('logout').click()
     })
 
-    it('fails with wrong credentials', function() {
+    it('fails with wrong credentials', function () {
       cy.get('#username').type('wrongUser')
       cy.get('#password').type('salainen')
       cy.contains('login').click()
@@ -31,14 +31,14 @@ describe('Blog app', function() {
     })
   })
 
-  describe('When logged in', function() {
-    beforeEach(function() {
+  describe('When logged in', function () {
+    beforeEach(function () {
       cy.get('#username').type('samik')
       cy.get('#password').type('salainen')
       cy.contains('login').click()
     })
 
-    it('A blog can be created', function() {
+    it('A blog can be created', function () {
       cy.contains('new blog').click()
       cy.get('#title').type('test 1')
       cy.get('#author').type('tester 1')
@@ -46,11 +46,11 @@ describe('Blog app', function() {
       cy.get('#create-button').click()
       cy.contains('test 1')
       cy.contains('tester 1')
-    
+
     })
   })
-  describe('When logged in and blog created', function() {
-    beforeEach(function() {
+  describe('When logged in and blog created', function () {
+    beforeEach(function () {
       cy.get('#username').type('samik')
       cy.get('#password').type('salainen')
       cy.contains('login').click()
@@ -60,15 +60,15 @@ describe('Blog app', function() {
       cy.get('#url').type('test/1.com')
       cy.get('#create-button').click()
     })
-    it('The blog can be liked', function(){
+    it('The blog can be liked', function () {
       cy.contains('view').click()
       cy.contains('like').click()
     })
-    it('The blog can be deleted', function() {
+    it('The blog can be deleted', function () {
       cy.contains('view').click()
       cy.contains('remove').click()
     })
-    it.only('The blogs are sorted by likes', function() {
+    it.only('The blogs are sorted by likes', function () {
       cy.contains('test 1').as('blog1')
       cy.get('#create-blog').click()
       cy.get('#title').type('test 2')
