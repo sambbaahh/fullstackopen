@@ -10,5 +10,5 @@ export const isNotNumber = (trainingDiary: number[], target: number): boolean =>
         }
     });
     return true;
-}
+};
 

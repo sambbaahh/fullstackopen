@@ -3,15 +3,15 @@ export const calculateBmi = (height: number, weight: number): string => {
         throw new Error('Provided values were not numbers!');
 
     }
-    const bmi = weight / ((height / 100) ^ 2)
+    const bmi = weight / ((height / 100) ^ 2);
     if (bmi < 18.5) {
-        return "Underweight (unhealthy weight)"
+        return "Underweight (unhealthy weight)";
     }
     else if (bmi > 18.5 && bmi < 24.9) {
-        return "Normal (healthy weight)"
+        return "Normal (healthy weight)";
     } else {
-        return "Overweight/obese (unhealthy weight)"
+        return "Overweight/obese (unhealthy weight)";
     }
-}
+};
 
-console.log(calculateBmi(180, 74))
+console.log(calculateBmi(180, 74));
