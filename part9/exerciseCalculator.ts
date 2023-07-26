@@ -10,7 +10,7 @@ interface Result {
     average: number;
 };
 
-const calculateExercises = (trainingDiary: Number[], target: number): Result => {
+const calculateExercises = (trainingDiary: number[], target: number): Result => {
     let trainingDays: number = 0;
     let sumHours: number = 0;
     let isSuccess: boolean = true;
@@ -62,7 +62,7 @@ try {
 
     }
   } catch (error: unknown) {
-    let errorMessage: string;
+    let errorMessage: string = "";
     if (error instanceof Error) {
       errorMessage += ' Error: ' + error.message;
     }

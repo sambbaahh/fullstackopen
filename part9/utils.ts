@@ -1,4 +1,4 @@
-export const isNotNumber = (trainingDiary: Number[], target: number): boolean => {
+export const isNotNumber = (trainingDiary: number[], target: number): boolean => {
 
     if (isNaN(target)) {
         throw new Error('Provided values were not numbers!');
