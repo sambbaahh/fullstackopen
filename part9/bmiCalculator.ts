@@ -1,4 +1,8 @@
-const calculateBmi = (height: number, weight: number): String => {
+export const calculateBmi = (height: number, weight: number): string => {
+    if (isNaN(height) || isNaN(weight)) {
+        throw new Error('Provided values were not numbers!');
+
+    }
     const bmi = weight / ((height / 100) ^ 2)
     if (bmi < 18.5) {
         return "Underweight (unhealthy weight)"
