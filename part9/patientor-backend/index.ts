@@ -26,10 +26,14 @@ app.get('/api/patients', (_req, res) => {
 });
 
 app.post('/api/patients', (_req, res) => {
-
-  const addedPatient = addPatient(_req.body as newPatient);
-
-  res.send(addedPatient);
+  try {
+    const addedPatient = addPatient(_req.body as newPatient);
+    res.send(addedPatient);
+  } catch (error: unknown) {
+    res.status(400).json({
+      error: error instanceof Error ? error.message : 'Unknown error.',
+    });
+  }
 });
 
 app.listen(PORT, () => {

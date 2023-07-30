@@ -11,7 +11,6 @@ export const getPatients = (): PatientWithoutSSN[] => {
         gender,
         occupation,
     }) => ({
-
         id,
         name,
         dateOfBirth,
