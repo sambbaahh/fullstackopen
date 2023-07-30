@@ -1,15 +1,6 @@
 import data from "../data/patients";
-
-type Patient = {
-    id: string;
-    name: string;
-    dateOfBirth: string;
-    ssn: string;
-    gender: string;
-    occupation: string;
-};
-
-type PatientWithoutSSN = Omit<Patient, 'ssn'>;
+import { v1 as uuid } from 'uuid';
+import { Patient, newPatient, PatientWithoutSSN } from "../utils/types";
 
 
 export const getPatients = (): PatientWithoutSSN[] => {
@@ -28,4 +19,15 @@ export const getPatients = (): PatientWithoutSSN[] => {
         occupation,
     }
     ));
+};
+
+export const addPatient = (patientInput: newPatient): Patient => {
+        const id = uuid();
+        const newPatient: Patient = {
+            id,
+            ...patientInput
+        };
+    
+    data.push(newPatient);
+    return newPatient;
 };

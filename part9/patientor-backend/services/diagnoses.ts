@@ -1,10 +1,5 @@
 import data from "../data/diagnoses";
-
-export type Diagnose = {
-    code: string;
-    name: string;
-    latin?: string;
-};
+import { Diagnose } from "../utils/types";
 
 export const getDiagnoses = (): Diagnose[] => {
     return data;
