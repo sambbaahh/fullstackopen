@@ -4,3 +4,10 @@ export interface Diary {
     weather: string;
     visibility: string;  
 }
+
+export interface DiaryEntry {
+    date: string;
+    weather: string;
+    visibility: string; 
+    comment: string;
+}
