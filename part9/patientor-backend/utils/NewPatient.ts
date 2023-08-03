@@ -49,6 +49,9 @@ const parseGender = (gender: unknown): Gender => {
     return gender;
 };
 
+// const parseEntry = (): Entry => {
+//     return [];
+// };
 
 export const parseNewPatient = (object: unknown): NewPatient => {
     if( !object || typeof object !== 'object' ){
@@ -65,7 +68,8 @@ export const parseNewPatient = (object: unknown): NewPatient => {
             dateOfBirth: parseDateOfBirth(object.dateOfBirth),
             ssn: parseSsn(object.ssn),
             gender: parseGender(object.gender),
-            occupation: parseOccupation(object.occupation)
+            occupation: parseOccupation(object.occupation),
+            entries: [],
                 };
     return newPatient;
     }
