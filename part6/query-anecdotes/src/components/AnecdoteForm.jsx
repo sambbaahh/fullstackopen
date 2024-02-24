@@ -17,6 +17,15 @@ const AnecdoteForm = () => {
       setTimeout(() => {
         notificationDispatch({ type: "CLEAR" });
       }, 5000);
+    },
+    onError: () => {
+      notificationDispatch({
+        type: "SET",
+        payload: `too short anecdote, must have length 5 or more`,
+      });
+      setTimeout(() => {
+        notificationDispatch({ type: "CLEAR" });
+      }, 5000);
     }
   })
 
@@ -37,7 +46,7 @@ const AnecdoteForm = () => {
     <div>
       <h3>create new</h3>
       <form onSubmit={onCreate}>
-        <input name='anecdote' minLength={5}/>
+        <input name='anecdote'/>
         <button type="submit">create</button>
       </form>
     </div>
