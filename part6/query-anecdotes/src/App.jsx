@@ -10,21 +10,21 @@ const App = () => {
   const queryClient = useQueryClient();
   const updatedAnecdoteMutation = useMutation({
     mutationFn: anecdotesService.update,
-    onSuccess: () => {
+    onSuccess: (updatedAnecdote) => {
       queryClient.invalidateQueries({ queryKey: ["anecdotes"] });
+      notificationDispatch({
+        type: "SET",
+        payload: `anecdote "${updatedAnecdote.content}" voted`,
+      });
+      setTimeout(() => {
+        notificationDispatch({ type: "CLEAR" });
+      }, 5000);
     },
   });
 
   const handleVote = (anecdote) => {
     console.log("vote: " + anecdote.content);
     updatedAnecdoteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 });
-    notificationDispatch({
-      type: "SET",
-      payload: `anecdote "${anecdote.content}" voted`,
-    });
-    setTimeout(() => {
-      notificationDispatch({ type: "CLEAR" });
-    }, 5000);
   };
 
   const result = useQuery({
