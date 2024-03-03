@@ -17,12 +17,13 @@ import {
   deleteOneBlog,
   setBlogs,
 } from "./reducers/blogSlice"
+import { clearUser, setUser } from "./reducers/userSlice"
 
 const App = () => {
   const blogs = useSelector((state) => state.blogs)
+  const user = useSelector((state) => state.user)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [user, setUser] = useState(null)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser")
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      dispatch(setUser(user))
       blogService.setToken(user.token)
     }
   }, [])
@@ -55,8 +56,10 @@ const App = () => {
         username,
         password,
       })
+
       window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user))
-      setUser(user)
+      dispatch(setUser(user))
+
       blogService.setToken(user.token)
       setUsername("")
       setPassword("")
@@ -68,6 +71,7 @@ const App = () => {
   const logout = (event) => {
     event.preventDefault()
     window.localStorage.clear()
+    dispatch(clearUser())
   }
 
   const addBlog = (blogObject) => {
@@ -92,7 +96,7 @@ const App = () => {
   }
   const noteFormRef = useRef()
 
-  if (user === null) {
+  if (!user.token) {
     return (
       <div>
         <Notification />
@@ -124,15 +128,18 @@ const App = () => {
         <Togglable buttonLabel="new blog" ref={noteFormRef}>
           <BlogForm createBlog={addBlog} />
         </Togglable>
-        {blogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            updateLikes={updateLikes}
-            user={user}
-            deleteBlog={deleteBlog}
-          />
-        ))}
+        {/* Create copy "[...blogs]" because sort mutates the blogs array!! */}
+        {[...blogs]
+          .sort((a, b) => b.likes - a.likes)
+          .map((blog) => (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              updateLikes={updateLikes}
+              user={user}
+              deleteBlog={deleteBlog}
+            />
+          ))}
       </div>
     )
   }

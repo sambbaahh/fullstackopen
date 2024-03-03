@@ -20,9 +20,9 @@ export const blogSlice = createSlice({
   initialState,
   reducers: {
     setBlogs: (state, action) => {
-      return action.payload
-        .map((blog) => (blog.likes ? blog : { ...blog, likes: 0 }))
-        .sort((a, b) => b.likes - a.likes)
+      return action.payload.map((blog) =>
+        blog.likes ? blog : { ...blog, likes: 0 }
+      )
     },
     addNewBlog: (state, action) => {
       return [...state, { ...action.payload, likes: 0 }]
