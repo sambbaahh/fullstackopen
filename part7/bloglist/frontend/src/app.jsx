@@ -10,6 +10,7 @@ import {
   setNotification,
   clearNotification,
 } from "./reducers/notificationSlice"
+import Blogs from "./components/Blogs"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -39,15 +40,15 @@ const App = () => {
     }
   }, [])
 
-  console.log(user.token)
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          user.token ? <FrontPage notify={notify} /> : <Login notify={notify} />
-        }
-      ></Route>
+      {user.token ? (
+        <Route path="" element={<FrontPage notify={notify} />}>
+          <Route path="" element={<Blogs notify={notify} />} />
+        </Route>
+      ) : (
+        <Route path="" element={<Login notify={notify} />} />
+      )}
     </Routes>
   )
 }
