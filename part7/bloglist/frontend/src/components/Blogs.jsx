@@ -4,11 +4,12 @@ import BlogForm from "../components/BlogForm"
 import Togglable from "../components/Togglable"
 import { addNewBlog, addLike, deleteOneBlog } from "../reducers/blogSlice"
 import blogService from "../services/blogs"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 
 const Blogs = (props) => {
   const blogs = useSelector((state) => state.blogs)
   const user = useSelector((state) => state.user)
+  const dispatch = useDispatch()
 
   const addBlog = (blogObject) => {
     noteFormRef.current.toggleVisibility()

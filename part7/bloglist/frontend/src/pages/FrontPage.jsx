@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom"
 
 const FrontPage = (props) => {
   const user = useSelector((state) => state.user)
+
   const dispatch = useDispatch()
 
   const logout = (event) => {

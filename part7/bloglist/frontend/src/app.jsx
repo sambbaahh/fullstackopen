@@ -3,7 +3,7 @@ import blogService from "./services/blogs"
 import { useDispatch, useSelector } from "react-redux"
 import { setBlogs } from "./reducers/blogSlice"
 import { setUser } from "./reducers/userSlice"
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import FrontPage from "./pages/FrontPage"
 import Login from "./pages/Login"
 import {
@@ -11,6 +11,7 @@ import {
   clearNotification,
 } from "./reducers/notificationSlice"
 import Blogs from "./components/Blogs"
+import Users from "./components/Users"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -42,12 +43,13 @@ const App = () => {
 
   return (
     <Routes>
-      {user.token ? (
-        <Route path="" element={<FrontPage notify={notify} />}>
-          <Route path="" element={<Blogs notify={notify} />} />
-        </Route>
+      {!user.token ? (
+        <Route path="/" element={<Login notify={notify} />} />
       ) : (
-        <Route path="" element={<Login notify={notify} />} />
+        <Route path="/" element={<FrontPage notify={notify} />}>
+          <Route index element={<Blogs notify={notify} />} />
+          <Route path="/users" element={<Users />} />
+        </Route>
       )}
     </Routes>
   )
