@@ -6,21 +6,29 @@ import Notification from "./components/Notification"
 import BlogForm from "./components/BlogForm"
 import Togglable from "./components/Togglable"
 import LoginForm from "./components/LoginForm"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import {
   clearNotification,
   setNotification,
 } from "./reducers/notificationSlice"
+import {
+  addLike,
+  addNewBlog,
+  deleteOneBlog,
+  setBlogs,
+} from "./reducers/blogSlice"
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const blogs = useSelector((state) => state.blogs)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
+    blogService.getAll().then((fetchedBlogs) => {
+      dispatch(setBlogs(fetchedBlogs))
+    })
   }, [])
 
   useEffect(() => {
@@ -65,21 +73,21 @@ const App = () => {
   const addBlog = (blogObject) => {
     noteFormRef.current.toggleVisibility()
     blogService.create(blogObject).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog))
+      dispatch(addNewBlog(returnedBlog))
       notify(`a new blog ${blogObject.title} by ${blogObject.author} added`)
     })
   }
 
   const updateLikes = (id, blogObject) => {
     blogService.update(id, blogObject).then((returnedBlog) => {
-      setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)))
+      dispatch(addLike({ id }))
     })
   }
 
   const deleteBlog = (blog) => {
-    const deletedBlogID = blog.id
-    blogService.remove(deletedBlogID).then((returnedBlog) => {
-      setBlogs(blogs.filter((blog) => blog.id !== deletedBlogID))
+    const id = blog.id
+    blogService.remove(id).then((returnedBlog) => {
+      dispatch(deleteOneBlog({ id }))
     })
   }
   const noteFormRef = useRef()
@@ -116,17 +124,15 @@ const App = () => {
         <Togglable buttonLabel="new blog" ref={noteFormRef}>
           <BlogForm createBlog={addBlog} />
         </Togglable>
-        {blogs
-          .sort((a, b) => b.likes - a.likes)
-          .map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              updateLikes={updateLikes}
-              user={user}
-              deleteBlog={deleteBlog}
-            />
-          ))}
+        {blogs.map((blog) => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            updateLikes={updateLikes}
+            user={user}
+            deleteBlog={deleteBlog}
+          />
+        ))}
       </div>
     )
   }
