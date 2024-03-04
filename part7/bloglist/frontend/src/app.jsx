@@ -1,9 +1,9 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import blogService from "./services/blogs"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { setBlogs } from "./reducers/blogSlice"
 import { setUser } from "./reducers/userSlice"
-import { Navigate, Route, Routes } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import FrontPage from "./pages/FrontPage"
 import Login from "./pages/Login"
 import {
@@ -16,7 +16,7 @@ import { SpecificUser } from "./components/SpecificUser"
 
 const App = () => {
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user)
+  const [isUserChecked, setIsUserChecked] = useState(false)
 
   //This could be better to create in redux thunk (we need this in Login and LandingPage)
   //This time I just pass this by props
@@ -40,19 +40,17 @@ const App = () => {
       dispatch(setUser(user))
       blogService.setToken(user.token)
     }
+    setIsUserChecked(true)
   }, [])
 
   return (
     <Routes>
-      {!user ? (
-        <Route path="/" element={<Login notify={notify} />} />
-      ) : (
-        <Route path="/" element={<FrontPage notify={notify} />}>
-          <Route index element={<Blogs notify={notify} />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/users/:userId" element={<SpecificUser />} />
-        </Route>
-      )}
+      <Route element={<FrontPage isUserChecked={isUserChecked} />}>
+        <Route path="/" element={<Blogs notify={notify} />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/users/:userId" element={<SpecificUser />} />
+      </Route>
+      <Route path="/login" element={<Login notify={notify} />} />
     </Routes>
   )
 }

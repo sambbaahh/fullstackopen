@@ -5,11 +5,13 @@ import LoginForm from "../components/LoginForm"
 import Notification from "../components/Notification"
 import blogService from "../services/blogs"
 import { setUser } from "../reducers/userSlice"
+import { useNavigate } from "react-router-dom"
 
 const Login = (props) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const dispatch = useDispatch()
+  const navigate = useNavigate("/")
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -26,6 +28,7 @@ const Login = (props) => {
       blogService.setToken(user.token)
       setUsername("")
       setPassword("")
+      navigate("/")
     } catch {
       props.notify("Wrong username or password", "alert")
     }
