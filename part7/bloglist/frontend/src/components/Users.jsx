@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 
 const Users = () => {
   const blogs = useSelector((state) => state.blogs)
@@ -40,7 +41,9 @@ const Users = () => {
         <tbody>
           {Array.from(blogMap).map(([key, value]) => (
             <tr key={key}>
-              <td>{value.name}</td>
+              <td>
+                <Link to={`/users/${key}`}>{value.name}</Link>
+              </td>
               <td>{value.blogCount}</td>
             </tr>
           ))}

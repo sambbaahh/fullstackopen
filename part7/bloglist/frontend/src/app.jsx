@@ -12,6 +12,7 @@ import {
 } from "./reducers/notificationSlice"
 import Blogs from "./components/Blogs"
 import Users from "./components/Users"
+import { SpecificUser } from "./components/SpecificUser"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -43,12 +44,13 @@ const App = () => {
 
   return (
     <Routes>
-      {!user.token ? (
+      {!user ? (
         <Route path="/" element={<Login notify={notify} />} />
       ) : (
         <Route path="/" element={<FrontPage notify={notify} />}>
           <Route index element={<Blogs notify={notify} />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/users/:userId" element={<SpecificUser />} />
         </Route>
       )}
     </Routes>
