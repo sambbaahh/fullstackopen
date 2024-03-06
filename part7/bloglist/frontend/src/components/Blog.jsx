@@ -1,80 +1,72 @@
-import { useState } from "react"
-import PropTypes from 'prop-types'
+import { useEffect, useState } from "react"
+import PropTypes from "prop-types"
+import { useSelector, useDispatch } from "react-redux"
+import { useParams } from "react-router-dom"
+import { addLike, deleteOneBlog } from "../reducers/blogSlice"
+import blogService from "../services/blogs"
 
-const Blog = ({ blog, updateLikes, user, deleteBlog }) => {
-  const [showMore, setShowMore] = useState(false)
+const Blog = () => {
+  const blogs = useSelector((state) => state.blogs)
+  const user = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+  const { blogId } = useParams()
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
+  const [blog, setBlog] = useState("")
 
-  const addLike = ({ blog }) => {
+  useEffect(() => {
+    setBlog(blogs.find((value) => value.id === blogId))
+  }, [blogs])
+
+  const updateLike = (blog) => {
     const id = blog.id
     const updatedBlog = {
       user: blog.user.id,
       likes: blog.likes + 1,
       author: blog.author,
       title: blog.title,
-      url: blog.url
+      url: blog.url,
     }
-    updateLikes(id, updatedBlog)
+    blogService.update(id, updatedBlog).then(() => {
+      dispatch(addLike({ id }))
+    })
   }
 
-  const removeBlog = ({ blog }) => {
+  const removeBlog = (id) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      deleteBlog(blog)
+      blogService.remove(id).then(() => {
+        dispatch(deleteOneBlog({ id }))
+      })
     }
   }
 
-  const lessDetails = () => (
-    <div className="blog" >
-      {blog.title} {blog.author}
-      <button id={blog.id} onClick={() => setShowMore(!showMore)}>
-        {showMore ? "hide" : "view"}
-      </button>
-    </div>
-  )
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    marginBottom: 5,
+  }
 
-  const moreDetails = () => (
-    <div className="blog" >
-      {blog.title} {blog.author}
-      <button id={blog.id} onClick={() => setShowMore(!showMore)}>
-        {showMore ? "hide" : "view"}
-      </button>
-      <div>
-        {blog.url}
-      </div>
-      <div>
-        likes {blog.likes}
-        <button onClick={() => addLike({ blog })}>
-          like
-        </button>
-      </div>
-      <div>
-        {blog.author}
-      </div>
-      {blog.user.id === user.id || blog.user.name === user.name 
-       ? <button onClick={() => removeBlog({ blog })}> remove </button>
-       : "" }
-
-    </div>
-  )
+  if (!blog) {
+    return null
+  }
 
   return (
-    <div style={blogStyle} className='blog'>
-      {showMore
-        ? moreDetails()
-        : lessDetails()}
+    <div style={blogStyle} className="blog">
+      <div className="blog">
+        <h1>{blog.title}</h1>
+        <a href={blog.url}>{blog.url}</a>
+        <div>
+          likes {blog.likes}
+          <button onClick={() => updateLike(blog)}>like</button>
+        </div>
+        <div>added by {blog.author}</div>
+        {blog.user.id === user.id ? (
+          <button onClick={() => removeBlog(blog.id)}> remove </button>
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   )
-}
-
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired
 }
 
 export default Blog

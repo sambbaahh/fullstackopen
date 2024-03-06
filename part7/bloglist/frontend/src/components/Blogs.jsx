@@ -1,15 +1,14 @@
 import { useRef } from "react"
-import Blog from "../components/Blog"
 import BlogForm from "../components/BlogForm"
 import Togglable from "../components/Togglable"
-import { addNewBlog, addLike, deleteOneBlog } from "../reducers/blogSlice"
+import { addNewBlog } from "../reducers/blogSlice"
 import blogService from "../services/blogs"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 
 const Blogs = (props) => {
-  const blogs = useSelector((state) => state.blogs)
-  const user = useSelector((state) => state.user)
   const dispatch = useDispatch()
+  const blogs = useSelector((state) => state.blogs)
 
   const addBlog = (blogObject) => {
     noteFormRef.current.toggleVisibility()
@@ -18,19 +17,6 @@ const Blogs = (props) => {
       props.notify(
         `a new blog ${blogObject.title} by ${blogObject.author} added`
       )
-    })
-  }
-
-  const updateLikes = (id, blogObject) => {
-    blogService.update(id, blogObject).then((returnedBlog) => {
-      dispatch(addLike({ id }))
-    })
-  }
-
-  const deleteBlog = (blog) => {
-    const id = blog.id
-    blogService.remove(id).then((returnedBlog) => {
-      dispatch(deleteOneBlog({ id }))
     })
   }
 
@@ -46,13 +32,9 @@ const Blogs = (props) => {
       {[...blogs]
         .sort((a, b) => b.likes - a.likes)
         .map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            updateLikes={updateLikes}
-            user={user}
-            deleteBlog={deleteBlog}
-          />
+          <div key={blog.id}>
+            <Link to={`blogs/${blog.id}`}>{blog.title}</Link>
+          </div>
         ))}
     </>
   )
