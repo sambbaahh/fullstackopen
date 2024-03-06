@@ -34,13 +34,23 @@ export const blogSlice = createSlice({
           : blog
       )
     },
+    newComment: (state, action) => {
+      return state.map((blog) =>
+        blog.id === action.payload.id
+          ? {
+              ...blog,
+              comments: [...blog.comments, { content: action.payload.comment }],
+            }
+          : blog
+      )
+    },
     deleteOneBlog: (state, action) => {
       return state.filter((blog) => blog.id !== action.payload.id)
     },
   },
 })
 
-export const { setBlogs, addNewBlog, addLike, deleteOneBlog } =
+export const { setBlogs, addNewBlog, addLike, deleteOneBlog, newComment } =
   blogSlice.actions
 
 export default blogSlice.reducer

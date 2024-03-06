@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
-import { addLike, deleteOneBlog } from "../reducers/blogSlice"
+import { addLike, deleteOneBlog, newComment } from "../reducers/blogSlice"
 import blogService from "../services/blogs"
 
 const Blog = () => {
@@ -12,6 +12,7 @@ const Blog = () => {
   const { blogId } = useParams()
 
   const [blog, setBlog] = useState("")
+  const [comment, setComment] = useState("")
 
   useEffect(() => {
     setBlog(blogs.find((value) => value.id === blogId))
@@ -39,6 +40,13 @@ const Blog = () => {
     }
   }
 
+  const addComment = (event) => {
+    event.preventDefault()
+    blogService.addComment(blogId, comment).then(() => {
+      dispatch(newComment({ id: blogId, comment }))
+    })
+  }
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -64,6 +72,18 @@ const Blog = () => {
         ) : (
           ""
         )}
+      </div>
+      <div className="comment">
+        <h3>comments</h3>
+        <form onSubmit={addComment}>
+          <input onChange={(e) => setComment(e.target.value)}></input>
+          <button type="submit">add comment</button>
+        </form>
+        <ul>
+          {blog.comments.map((comment, index) => (
+            <li key={index}>{comment.content}</li>
+          ))}
+        </ul>
       </div>
     </div>
   )
