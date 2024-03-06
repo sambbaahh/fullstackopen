@@ -24,8 +24,7 @@ const Blogs = (props) => {
 
   return (
     <>
-      <h2> create new </h2>
-      <Togglable buttonLabel="new blog" ref={noteFormRef}>
+      <Togglable buttonLabel="create new" ref={noteFormRef}>
         <BlogForm createBlog={addBlog} />
       </Togglable>
       {/* Create copy "[...blogs]" because sort mutates the blogs array!! */}

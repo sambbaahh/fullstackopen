@@ -1,19 +1,10 @@
-import { useDispatch, useSelector } from "react-redux"
-import { clearUser } from "../reducers/userSlice"
 import Notification from "../components/Notification"
-import { Navigate, Outlet, useNavigate } from "react-router-dom"
+import { Navigate, Outlet } from "react-router-dom"
+import { useSelector } from "react-redux"
+import { NavBar } from "../components/NavBar"
 
 const FrontPage = (props) => {
   const user = useSelector((state) => state.user)
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-
-  const logout = (event) => {
-    event.preventDefault()
-    window.localStorage.clear()
-    dispatch(clearUser())
-    navigate("/login")
-  }
 
   if (user === undefined || !props.isUserChecked) {
     return null
@@ -21,12 +12,9 @@ const FrontPage = (props) => {
 
   return user ? (
     <div>
-      <h2>blogs</h2>
       <Notification />
-      <div>
-        <p>{user.name} logged in</p>
-        <button onClick={logout}> logout </button>
-      </div>
+      <NavBar />
+      <h2>blog app</h2>
       <Outlet />
     </div>
   ) : (
