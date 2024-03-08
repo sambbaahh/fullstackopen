@@ -1,5 +1,6 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
+const { v4: uuid } = require("uuid");
 
 let authors = [
   {
@@ -98,8 +99,18 @@ const typeDefs = `
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(author: String): [Book!]!
+    allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+  }
+
+  type Mutation {
+    addBook(
+      title: String!,
+      author: String!,
+      published: Int!,
+      genres: [String]!
+    ): Book
+    editAuthor(name: String!, setBornTo: Int!): Author
   }
 `;
 
@@ -108,8 +119,15 @@ const resolvers = {
     bookCount: () => books.length,
     authorCount: () => authors.length,
     allBooks: (root, args) => {
-      if (args.author) {
+      if (args.author && args.genre) {
+        return books.filter(
+          (book) =>
+            book.author === args.author && book.genres.includes(args.genre)
+        );
+      } else if (args.author) {
         return books.filter((book) => book.author === args.author);
+      } else if (args.genre) {
+        return books.filter((book) => book.genres.includes(args.genre));
       } else {
         return books;
       }
@@ -119,6 +137,27 @@ const resolvers = {
   Author: {
     bookCount: (root) => {
       return books.filter((book) => book.author === root.name).length;
+    },
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      const book = { ...args, id: uuid() };
+      books = books.concat(book);
+      if (!authors.find((value) => value.name === args.author)) {
+        authors = authors.concat({ name: args.author, id: uuid() });
+      }
+      return book;
+    },
+    editAuthor: (root, args) => {
+      const authorIndex = authors.findIndex(
+        (value) => value.name === args.name
+      );
+      if (authorIndex === -1) return null;
+
+      const modifiedAuthor = { ...authors[authorIndex], born: args.setBornTo };
+      authors[authorIndex] = modifiedAuthor;
+
+      return modifiedAuthor;
     },
   },
 };
