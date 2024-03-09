@@ -24,7 +24,7 @@ const Books = (props) => {
             <th>published</th>
           </tr>
           {books.data.allBooks.map((a) => (
-            <tr key={a.title}>
+            <tr key={a.id}>
               <td>{a.title}</td>
               <td>{a.author}</td>
               <td>{a.published}</td>

@@ -5,7 +5,7 @@ import queryService from "../queries";
 const NewBook = (props) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-  const [published, setPublished] = useState(0);
+  const [published, setPublished] = useState("");
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
 
@@ -28,7 +28,7 @@ const NewBook = (props) => {
     createBook({ variables: { title, author, published, genres } });
 
     setTitle("");
-    setPublished(0);
+    setPublished("");
     setAuthor("");
     setGenres([]);
     setGenre("");
@@ -61,7 +61,7 @@ const NewBook = (props) => {
           <input
             type="number"
             value={published}
-            onChange={({ target }) => setPublished(target.value)}
+            onChange={({ target }) => setPublished(parseInt(target.value))}
           />
         </div>
         <div>
