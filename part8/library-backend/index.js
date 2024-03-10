@@ -81,14 +81,17 @@ const resolvers = {
       if (args.author) {
         const author = await Author.findOne({ name: args.author });
         if (args.author && args.genre) {
-          return await Book.find({ author: author._id, genres: args.genre });
+          return await Book.find({
+            author: author._id,
+            genres: args.genre,
+          }).populate("author");
         } else {
-          return await Book.find({ author: author._id });
+          return await Book.find({ author: author._id }).populate("author");
         }
       } else if (args.genre) {
-        return await Book.find({ genres: args.genre });
+        return await Book.find({ genres: args.genre }).populate("author");
       } else {
-        return await Book.find({});
+        return await Book.find({}).populate("author");
       }
     },
     allAuthors: async () => await Author.find({}),
