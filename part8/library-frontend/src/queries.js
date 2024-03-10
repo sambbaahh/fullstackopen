@@ -25,6 +25,15 @@ const ALL_BOOKS = gql`
   }
 `;
 
+const USER = gql`
+  query {
+    me {
+      username
+      favoriteGenre
+    }
+  }
+`;
+
 const CREATE_BOOK = gql`
   mutation createBook(
     $title: String!
@@ -65,4 +74,5 @@ export default {
   CREATE_BOOK,
   SET_AUTHOR_BIRTHYEAR,
   LOGIN,
+  USER,
 };
