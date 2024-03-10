@@ -1,4 +1,5 @@
 const { ApolloServer } = require("@apollo/server");
+const { GraphQLError } = require("graphql");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { v4: uuid } = require("uuid");
 const mongoose = require("mongoose");
@@ -83,11 +84,33 @@ const resolvers = {
       let author = await Author.findOne({ name: args.author });
       if (!author) {
         author = new Author({ name: args.author });
-        await author.save();
+        try {
+          await author.save();
+        } catch (error) {
+          throw new GraphQLError(
+            "The author's name must be at least four characters long",
+            {
+              extensions: {
+                code: "BAD_USER_INPUT",
+              },
+            }
+          );
+        }
       }
 
       const book = new Book({ ...args, author: author._id });
-      await book.save();
+      try {
+        await book.save();
+      } catch (error) {
+        throw new GraphQLError(
+          "The book's name must be at least five characters long",
+          {
+            extensions: {
+              code: "BAD_USER_INPUT",
+            },
+          }
+        );
+      }
 
       return book;
     },
