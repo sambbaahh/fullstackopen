@@ -4,7 +4,7 @@ import queryService from "../queries";
 
 const SetBirthyear = (props) => {
   const [year, setYear] = useState("");
-  const [name, setName] = useState(props.authors[0].name);
+  const [name, setName] = useState(props.authors[0]?.name);
 
   const [setAuthorBirthyear] = useMutation(queryService.SET_AUTHOR_BIRTHYEAR, {
     refetchQueries: [{ query: queryService.ALL_AUTHORS }],

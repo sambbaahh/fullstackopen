@@ -11,18 +11,34 @@ const ALL_AUTHORS = gql`
   }
 `;
 
+const BOOK_DETAILS = gql`
+  fragment BookDetails on Book {
+    title
+    published
+    id
+    genres
+    author {
+      name
+    }
+  }
+`;
+
 const ALL_BOOKS = gql`
   query {
     allBooks {
-      title
-      published
-      id
-      genres
-      author {
-        name
-      }
+      ...BookDetails
     }
   }
+  ${BOOK_DETAILS}
+`;
+
+const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
 `;
 
 const USER = gql`
@@ -72,6 +88,7 @@ export default {
   ALL_AUTHORS,
   ALL_BOOKS,
   CREATE_BOOK,
+  BOOK_ADDED,
   SET_AUTHOR_BIRTHYEAR,
   LOGIN,
   USER,

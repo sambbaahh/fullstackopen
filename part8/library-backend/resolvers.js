@@ -28,14 +28,16 @@ const resolvers = {
         return await Book.find({}).populate("author");
       }
     },
-    allAuthors: async () => await Author.find({}),
+    allAuthors: async () => {
+      const result = await Author.find({}).populate("books");
+      result.forEach((author) => {
+        author.bookCount = author.books.length;
+      });
+
+      return result;
+    },
     me: (root, args, context) => {
       return context.currentUser;
-    },
-  },
-  Author: {
-    bookCount: async (root) => {
-      return (await Book.find({ author: root.id })).length;
     },
   },
   Mutation: {
@@ -70,6 +72,8 @@ const resolvers = {
       const book = new Book({ ...args, author: author._id });
       try {
         await book.save();
+        author.books.push(book._id);
+        await author.save();
         await book.populate("author");
       } catch (error) {
         throw new GraphQLError(

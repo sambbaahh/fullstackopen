@@ -1,11 +1,27 @@
 import { useState } from "react";
-import { useApolloClient, useQuery } from "@apollo/client";
+import { useApolloClient, useQuery, useSubscription } from "@apollo/client";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Login from "./components/Login";
 import Recommendations from "./components/Recommendations";
 import queryService from "./queries";
+
+export const updateCache = (cache, query, bookAdded) => {
+  const uniqByName = (a) => {
+    let seen = new Set();
+    return a.filter((item) => {
+      let k = item.title;
+      return seen.has(k) ? false : seen.add(k);
+    });
+  };
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqByName(allBooks.concat(bookAdded)),
+    };
+  });
+};
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -14,6 +30,17 @@ const App = () => {
 
   const userResult = useQuery(queryService.USER, {
     skip: !token,
+  });
+
+  useSubscription(queryService.BOOK_ADDED, {
+    onData: ({ data }) => {
+      window.alert("new book added: " + data.data.bookAdded.title);
+      updateCache(
+        client.cache,
+        { query: queryService.ALL_BOOKS },
+        data.data.bookAdded
+      );
+    },
   });
 
   const logout = () => {
@@ -48,7 +75,7 @@ const App = () => {
 
       <Recommendations
         show={page === "recommend"}
-        favoriteGenre={userResult.data.me.favoriteGenre}
+        favoriteGenre={userResult.data?.me?.favoriteGenre}
       />
     </div>
   );
