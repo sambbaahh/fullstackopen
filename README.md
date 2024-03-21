@@ -14,7 +14,7 @@ My Solutions for the [Full Stack open](https://fullstackopen.com) course
 - [x] Part 7 - [React router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
 - [x] Part 8 - [GraphQL](https://fullstackopen.com/en/part8)
 - [x] Part 9 - [TypeScript](https://fullstackopen.com/en/part9)
-- [ ] Part 10 - [React Native](https://fullstackopen.com/en/part10)
+- [x] Part 10 - [React Native](https://fullstackopen.com/en/part10)
 - [ ] Part 11 - [CI/CD](https://fullstackopen.com/en/part11)
 - [ ] Part 12 - [Containers](https://fullstackopen.com/en/part12)
 - [ ] Part 13 - [Using relational databases](https://fullstackopen.com/en/part13)
