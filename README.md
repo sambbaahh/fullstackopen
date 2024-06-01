@@ -17,4 +17,4 @@ My Solutions for the [Full Stack open](https://fullstackopen.com) course
 - [x] Part 10 - [React Native](https://fullstackopen.com/en/part10)
 - [x] Part 11 - [CI/CD](https://fullstackopen.com/en/part11)
 - [x] Part 12 - [Containers](https://fullstackopen.com/en/part12)
-- [ ] Part 13 - [Using relational databases](https://fullstackopen.com/en/part13)
+- [x] Part 13 - [Using relational databases](https://fullstackopen.com/en/part13)
