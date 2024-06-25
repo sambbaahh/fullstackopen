@@ -1,6 +1,6 @@
 # Full Stack open
 
-My Solutions for the [Full Stack open](https://fullstackopen.com) course
+My solutions for the [Full Stack open](https://fullstackopen.com) course
 
 ## Parts
 
